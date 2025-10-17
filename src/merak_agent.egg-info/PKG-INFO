@@ -1,3 +1,11 @@
+Metadata-Version: 2.4
+Name: merak-agent
+Version: 0.1.0
+Summary: Trip planning agent powered by the OpenAI Agents Python SDK.
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: openai-agents>=0.2.9
+
 ## Merak Trip Planner Agent
 
 This repo now includes a minimal example of building a travel-planning agent using the [OpenAI Agents Python SDK](https://openai.github.io/openai-agents-python/).

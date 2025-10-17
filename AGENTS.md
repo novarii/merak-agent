@@ -13,6 +13,7 @@
 ## Implementation
 - ALWAYS look at our local docs when implementing a feature, and if there is information missing, search web docs to find the most recent information on the frameworks we use.
 - When planning or implementing any task, you MUST refer to live documentation (with context 7).
+- We are using python3, include `python3` in your commands instead of `python`.
 
 ## Project Structure & Module Organization
 Keep core agent code in `src/merak_agent/` with subpackages for `agents/`, `tools/`, and `workflows/`. Shared utilities live in `src/merak_agent/common/`. Persisted prompts or fixtures belong in `assets/` (e.g., `assets/prompts/hiring.md`). Mirror runtime modules inside `tests/` such that `src/merak_agent/tools/calendar.py` pairs with `tests/tools/test_calendar.py`. Place developer automation inside `scripts/` and make each script idempotent so it can be rerun safely.
