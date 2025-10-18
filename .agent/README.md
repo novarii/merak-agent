@@ -9,7 +9,7 @@ This folder centralises engineering knowledge for the Merak Trip Planner agent. 
 - _None yet._ Document new repeatable procedures under `SOP/` (e.g., migrations, deployment checklists).
 
 ## Tasks
-- _None yet._ Capture feature PRDs and implementation plans inside `Tasks/`.
+- [Tasks/frontend_next_plan.md](Tasks/frontend_next_plan.md) — implementation plan for the Next.js frontend and ChatKit integration.
 
 ## How to Contribute
 - Follow the repository guidelines in `AGENTS.md` and keep docs ASCII/markdown.

@@ -37,3 +37,28 @@ python3 scripts/run_trip_planner.py --single-turn "Plan a winter ski escape in t
 ```bash
 pytest
 ```
+
+### Run the ChatKit FastAPI Server
+Enable the ChatKit bridge to power the upcoming Next.js frontend.
+
+```bash
+export OPENAI_API_KEY=sk-...
+export MERAK_ENABLE_CHATKIT_SERVER=1
+python3 scripts/run_chatkit_server.py --host 0.0.0.0 --port 8000
+```
+
+Health checks are available at `http://localhost:8000/healthz`. ChatKit clients should POST to
+`/chatkit` and send the JSON payloads defined in the [ChatKit Python docs](https://openai.github.io/chatkit-python/server).
+
+### Next.js Frontend
+Phase 2 introduces the browser client scaffold in `frontend/merak_web`.
+
+```bash
+cd frontend/merak_web
+npm install
+npm run dev
+```
+
+- Requires Node.js 24.5 or newer (see `.nvmrc` inside the project).
+- `npm run lint`, `npm run test`, and `npm run typecheck` mirror the Python tooling conventions.
+- The landing page currently ships with a placeholder hero; upcoming phases will layer in the ChatKit streaming proxy and chat components.

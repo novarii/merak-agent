@@ -71,6 +71,11 @@ Merak Agent is a Python 3.11 project that delivers a travel-planning conversatio
 - Introduce additional tools under `src/merak_agent/tools/`, ensuring matching tests and explicit exports in `__init__.py`.
 - Persist prompt templates in `assets/prompts/` with a `.j2` suffix to keep them organized.
 
+## Planned Web Service
+- A FastAPI ChatKit server will expose the `TripPlanner` agent through a `/chatkit` endpoint and stream results using `Runner.run_streamed` and `stream_agent_response`, following the [ChatKit server documentation](https://openai.github.io/chatkit-python/server).
+- The service will run via a dedicated `scripts/run_chatkit_server.py` entrypoint that starts `uvicorn` with production-friendly defaults (`uvicorn scripts.run_chatkit_server:app --host 0.0.0.0 --port 8000`), keeping deployment tooling consistent with the CLI scripts.
+- This FastAPI layer remains decoupled from the CLI workflow and can be gated behind a feature flag until the Next.js frontend is stable.
+- Set `MERAK_ENABLE_CHATKIT_SERVER=1` to launch the service; the flag prevents accidental exposure during ongoing frontend development.
 ## Related Docs
 - [../README.md](../README.md) – index of internal documentation and onboarding pointers.
 - [../../README.md](../../README.md) – repository quickstart and CLI usage.
