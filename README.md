@@ -8,17 +8,29 @@ This repo now includes a minimal example of building a travel-planning agent usi
 
 ### Setup
 ```bash
-python -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
 ### Run the Trip Planner
-Provide the traveler details either as CLI arguments or via stdin.
+By default the CLI starts an interactive REPL that keeps the conversation history for the duration of the process. You can optionally seed the first turn via CLI arguments.
 
 ```bash
 export OPENAI_API_KEY=sk-...
-python scripts/run_trip_planner.py "Plan a spring honeymoon in Japan focused on culture and food."
+python3 scripts/run_trip_planner.py
+# or seed the opening request
+python3 scripts/run_trip_planner.py "Plan a spring honeymoon in Japan focused on culture and food."
+```
+
+Type `exit` or `quit` to end the chat. Supply `--session-id my_trip` to persist the thread with `SQLiteSession` and resume it later.
+
+### Single-Turn Mode
+Use the `--single-turn` flag when you only need a one-off itinerary.
+
+```bash
+export OPENAI_API_KEY=sk-...
+python3 scripts/run_trip_planner.py --single-turn "Plan a winter ski escape in the Alps."
 ```
 
 ### Tests
