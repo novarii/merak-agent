@@ -8,21 +8,21 @@
     <style>
       @font-face {
         font-family: "Saprona";
-        src: url("../public/fonts/Saprona-Regular.woff2") format("woff2");
+        src: url("./fonts/Saprona-Regular.woff2") format("woff2");
         font-weight: 400;
         font-style: normal;
         font-display: swap;
       }
       @font-face {
         font-family: "Saprona";
-        src: url("../public/fonts/Saprona-Medium.woff2") format("woff2");
+        src: url("./fonts/Saprona-Medium.woff2") format("woff2");
         font-weight: 500;
         font-style: normal;
         font-display: swap;
       }
       @font-face {
         font-family: "Saprona";
-        src: url("../public/fonts/Saprona-SemiBold.woff2") format("woff2");
+        src: url("./fonts/Saprona-SemiBold.woff2") format("woff2");
         font-weight: 600;
         font-style: normal;
         font-display: swap;
@@ -113,10 +113,11 @@
       .marketplace {
         max-width: 1440px;
         margin: 0 auto;
-        padding: 24px 50px 80px;
+        padding: 0px 60px 120px;
         display: grid;
-        grid-template-columns: 500px 1fr;
-        gap: 32px;
+        grid-template-columns: minmax(260px, 360px) minmax(620px, 780px);
+        align-items: flex-start;
+        gap: 80px;
         position: relative;
       }
 
@@ -134,7 +135,7 @@
         width: 420px;
         height: 420px;
         background: rgba(255, 221, 194, 0.55);
-        top: 180px;
+        top: 200px;
         left: -160px;
       }
 
@@ -143,77 +144,34 @@
         height: 520px;
         background: rgba(132, 183, 255, 0.4);
         bottom: -120px;
-        left: 180px;
+        left: 200px;
       }
 
       .marketplace__sidebar {
-        position: relative;
-        padding-top: 40px;
-      }
-
-      .marketplace__glass {
-        background: var(--gradient-overlay);
-        border-radius: 35px;
-        position: relative;
-        padding: 32px;
-        overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        box-shadow: inset 0 0 7px rgba(240, 240, 240, 0.8),
-          0 24px 80px rgba(0, 0, 0, 0.1);
-      }
-
-      .marketplace__glass::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: rgba(255, 255, 255, 0.55);
-        mix-blend-mode: lighten;
-        pointer-events: none;
-        opacity: 0.3;
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
       }
 
       .marketplace__title {
-        font-size: 32px;
+        margin: 0 0 20px;
+        font-size: 44px;
         font-weight: 600;
-        margin: 0 0 24px;
+        line-height: 1.1;
       }
 
       .marketplace__intro {
+        margin: 0;
         font-size: 18px;
+        line-height: 1.7;
         color: var(--color-muted);
-        margin: 0 0 32px;
-        line-height: 1.45;
       }
 
-      .search-box {
+      .marketplace__results {
         position: relative;
-        background: rgba(255, 255, 255, 0.92);
-        border-radius: 34px;
-        border: 1px solid rgba(255, 255, 255, 0.8);
-        padding: 28px 28px 40px;
-        box-shadow: inset 0 0 2px rgba(240, 240, 240, 0.8),
-          0 20px 60px rgba(0, 0, 0, 0.08);
-      }
-
-      .search-box label {
-        display: block;
-        font-size: 20px;
-        font-weight: 600;
-        margin-bottom: 12px;
-      }
-
-      .search-box textarea {
-        width: 100%;
-        min-height: 110px;
-        border: none;
-        border-radius: 24px;
-        background: rgba(240, 240, 240, 0.65);
-        padding: 16px 18px;
-        font-family: var(--font-family);
-        font-size: 18px;
-        color: var(--color-muted);
-        resize: vertical;
-        outline: none;
+        display: flex;
+        justify-content: flex-end;
+        padding-top: 40px;
       }
 
       .quick-actions {
@@ -242,11 +200,6 @@
         box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
       }
 
-      .marketplace__results {
-        position: relative;
-        padding-top: 40px;
-      }
-
       .results-wrapper {
         background: var(--color-card-bg);
         border-radius: 35px;
@@ -254,6 +207,8 @@
         backdrop-filter: blur(12px);
         padding: 48px 38px;
         box-shadow: 0 24px 80px rgba(0, 0, 0, 0.08);
+        width: min(760px, 100%);
+        margin-left: auto;
       }
 
       .result-card {
@@ -428,6 +383,25 @@
       @media (max-width: 1200px) {
         .marketplace {
           grid-template-columns: 1fr;
+          gap: 48px;
+          padding: 60px 40px 100px;
+        }
+
+        .marketplace__sidebar {
+          justify-content: center;
+        }
+
+        .marketplace__glass {
+          max-width: 520px;
+          margin: 0 auto;
+        }
+
+        .marketplace__results {
+          justify-content: center;
+        }
+
+        .results-wrapper {
+          margin-left: 0;
         }
 
         .vertical-icons {
@@ -443,7 +417,15 @@
         }
 
         .marketplace {
-          padding: 24px 24px 60px;
+          padding: 32px 20px 72px;
+        }
+
+        .marketplace__glass {
+          padding: 36px 28px;
+        }
+
+        .marketplace__title {
+          font-size: 32px;
         }
       }
     </style>
@@ -470,28 +452,7 @@
 
       <main>
         <div class="marketplace">
-          <section class="marketplace__sidebar">
-            <div class="marketplace__glass">
-              <h1 class="marketplace__title">Best Match Research</h1>
-              <p class="marketplace__intro">
-                Ask Merak to scout the marketplace, curate the right operators,
-                and start hiring the moment you are ready.
-              </p>
-              <div class="search-box">
-                <label for="search-input">Ask Merak</label>
-                <textarea
-                  id="search-input"
-                  placeholder="Ask Merak to hire you your new accountant..."
-                ></textarea>
-                <div class="quick-actions">
-                  <button type="button">Accounting</button>
-                  <button type="button">Bookkeeping</button>
-                  <button type="button">Fractional CFO</button>
-                  <button type="button">Tax Advisory</button>
-                </div>
-              </div>
-            </div>
-          </section>
+          <section class="marketplace__sidebar"></section>
 
           <section class="marketplace__results">
             <div class="vertical-icons">
