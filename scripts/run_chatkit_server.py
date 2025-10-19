@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import os
+from pathlib import Path
 from typing import Any, Dict
 
 from fastapi import FastAPI, Request
@@ -16,6 +17,7 @@ from merak_agent.workflows import TripPlannerChatKitServer
 
 
 FEATURE_FLAG_ENV = "MERAK_ENABLE_CHATKIT_SERVER"
+DB_PATH_ENV = "MERAK_CHATKIT_DB_PATH"
 DEFAULT_HOST = "127.0.0.1"
 DEFAULT_PORT = 8000
 
@@ -89,6 +91,7 @@ def build_app(server: TripPlannerChatKitServer) -> FastAPI:
 
 def _print_ready_message(host: str, port: int) -> None:
     endpoint = f"http://{host}:{port}/chatkit"
+    db_path = os.getenv(DB_PATH_ENV, str(Path(".merak") / TripPlannerChatKitServer.DEFAULT_DB_FILENAME))
     print(
         "\nChatKit server ready.\n"
         "Quick verification:\n"
@@ -111,6 +114,7 @@ def _print_ready_message(host: str, port: int) -> None:
         "              }\n"
         "            }\n"
         "          }'\n",
+        f"\nSQLite transcript store: {db_path}",
     )
 
 
@@ -118,7 +122,8 @@ def main(argv: list[str] | None = None) -> None:
     _require_environment()
     args = _parse_args(argv)
 
-    server = TripPlannerChatKitServer()
+    db_path = os.getenv(DB_PATH_ENV)
+    server = TripPlannerChatKitServer(database_path=db_path if db_path else None)
     app = build_app(server)
 
     _print_ready_message(args.host, args.port)
