@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Merak | Marketplace Research</title>
+    
+    <style>
+      @font-face {
+        font-family: "Saprona";
+        src: url("../public/fonts/Saprona-Regular.woff2") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Saprona";
+        src: url("../public/fonts/Saprona-Medium.woff2") format("woff2");
+        font-weight: 500;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Saprona";
+        src: url("../public/fonts/Saprona-SemiBold.woff2") format("woff2");
+        font-weight: 600;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      :root {
+        --color-bg: #ffffff;
+        --color-card-bg: rgba(255, 255, 255, 0.82);
+        --color-border: rgba(255, 255, 255, 0.45);
+        --color-text-primary: #1d1d1d;
+        --color-text-secondary: #8c8c8c;
+        --color-muted: #454545;
+        --color-tag-best: #ffd2d1;
+        --color-tag-top: #d9e9ff;
+        --color-tag-text: #000e20;
+        --color-pill-ask: #f0f0f0;
+        --color-pill-hire: #ffef3b;
+        --color-divider: rgba(0, 0, 0, 0.08);
+        --gradient-overlay: linear-gradient(
+          135deg,
+          rgba(140, 140, 140, 0.12) 0%,
+          rgba(38, 38, 38, 0.25) 100%
+        );
+        --font-family: "Saprona", "Georgia", serif;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--font-family);
+        background-color: var(--color-bg);
+        color: var(--color-text-primary);
+        min-height: 100vh;
+      }
+
+      .page {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      header {
+        padding: 24px 0;
+      }
+
+      .nav {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 0 50px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .nav__logo img {
+        height: 54px;
+        width: auto;
+        display: block;
+      }
+
+      .nav__links {
+        display: flex;
+        gap: 30px;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .nav__links a {
+        text-decoration: none;
+        color: var(--color-text-primary);
+        font-size: 20px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+      }
+
+      main {
+        position: relative;
+        flex: 1;
+        overflow: hidden;
+      }
+
+      .marketplace {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 24px 50px 80px;
+        display: grid;
+        grid-template-columns: 500px 1fr;
+        gap: 32px;
+        position: relative;
+      }
+
+      .marketplace::before,
+      .marketplace::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.55;
+        z-index: -2;
+      }
+
+      .marketplace::before {
+        width: 420px;
+        height: 420px;
+        background: rgba(255, 221, 194, 0.55);
+        top: 180px;
+        left: -160px;
+      }
+
+      .marketplace::after {
+        width: 520px;
+        height: 520px;
+        background: rgba(132, 183, 255, 0.4);
+        bottom: -120px;
+        left: 180px;
+      }
+
+      .marketplace__sidebar {
+        position: relative;
+        padding-top: 40px;
+      }
+
+      .marketplace__glass {
+        background: var(--gradient-overlay);
+        border-radius: 35px;
+        position: relative;
+        padding: 32px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        box-shadow: inset 0 0 7px rgba(240, 240, 240, 0.8),
+          0 24px 80px rgba(0, 0, 0, 0.1);
+      }
+
+      .marketplace__glass::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.55);
+        mix-blend-mode: lighten;
+        pointer-events: none;
+        opacity: 0.3;
+      }
+
+      .marketplace__title {
+        font-size: 32px;
+        font-weight: 600;
+        margin: 0 0 24px;
+      }
+
+      .marketplace__intro {
+        font-size: 18px;
+        color: var(--color-muted);
+        margin: 0 0 32px;
+        line-height: 1.45;
+      }
+
+      .search-box {
+        position: relative;
+        background: rgba(255, 255, 255, 0.92);
+        border-radius: 34px;
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        padding: 28px 28px 40px;
+        box-shadow: inset 0 0 2px rgba(240, 240, 240, 0.8),
+          0 20px 60px rgba(0, 0, 0, 0.08);
+      }
+
+      .search-box label {
+        display: block;
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 12px;
+      }
+
+      .search-box textarea {
+        width: 100%;
+        min-height: 110px;
+        border: none;
+        border-radius: 24px;
+        background: rgba(240, 240, 240, 0.65);
+        padding: 16px 18px;
+        font-family: var(--font-family);
+        font-size: 18px;
+        color: var(--color-muted);
+        resize: vertical;
+        outline: none;
+      }
+
+      .quick-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 24px;
+      }
+
+      .quick-actions button {
+        border: none;
+        border-radius: 20px;
+        padding: 8px 18px;
+        background: rgba(255, 255, 255, 0.95);
+        font-size: 18px;
+        font-weight: 500;
+        color: var(--color-text-primary);
+        cursor: pointer;
+        box-shadow: inset 0 0 2px rgba(240, 240, 240, 0.8),
+          0 10px 25px rgba(0, 0, 0, 0.07);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .quick-actions button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+      }
+
+      .marketplace__results {
+        position: relative;
+        padding-top: 40px;
+      }
+
+      .results-wrapper {
+        background: var(--color-card-bg);
+        border-radius: 35px;
+        border: 1px solid var(--color-border);
+        backdrop-filter: blur(12px);
+        padding: 48px 38px;
+        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.08);
+      }
+
+      .result-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 30px;
+        padding: 28px 26px;
+        margin-bottom: 24px;
+        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.65);
+      }
+
+      .result-card:last-of-type {
+        margin-bottom: 0;
+      }
+
+      .result-card__header {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+      }
+
+      .result-card__avatar {
+        width: 78px;
+        height: 78px;
+        border-radius: 18px;
+        background: linear-gradient(140deg, #d9d9d9 0%, #f0f0f0 100%);
+        flex-shrink: 0;
+      }
+
+      .result-card__meta {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .result-card__tags {
+        display: flex;
+        gap: 8px;
+      }
+
+      .tag {
+        font-size: 11px;
+        font-weight: 500;
+        padding: 6px 10px;
+        border-radius: 8px;
+        background: var(--color-tag-best);
+        color: var(--color-tag-text);
+        letter-spacing: 0.02em;
+      }
+
+      .tag--secondary {
+        background: var(--color-tag-top);
+      }
+
+      .result-card__title {
+        font-size: 22px;
+        font-weight: 500;
+      }
+
+      .result-card__subtitle {
+        font-size: 16px;
+        color: var(--color-text-secondary);
+      }
+
+      .result-card__more {
+        background: #f0f0f0;
+        border: none;
+        border-radius: 6px;
+        width: 30px;
+        height: 30px;
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+      }
+
+      .result-card__more svg {
+        width: 20px;
+        height: 20px;
+        fill: none;
+        stroke: var(--color-text-primary);
+      }
+
+      .result-card__divider {
+        margin: 20px 0;
+        height: 1px;
+        background: var(--color-divider);
+      }
+
+      .result-card__description {
+        font-size: 14px;
+        color: var(--color-muted);
+        line-height: 1.5;
+        margin: 0;
+      }
+
+      .result-card__footer {
+        margin-top: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+      }
+
+      .result-card__stat {
+        font-size: 12px;
+        color: var(--color-text-secondary);
+      }
+
+      .result-card__actions {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .icon-button {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        display: grid;
+        place-items: center;
+        background: rgba(240, 240, 240, 0.75);
+        cursor: pointer;
+      }
+
+      .icon-button svg {
+        width: 22px;
+        height: 22px;
+        stroke: var(--color-text-primary);
+        fill: none;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        border-radius: 22px;
+        font-size: 14px;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+      }
+
+      .pill--ask {
+        background: var(--color-pill-ask);
+        color: var(--color-tag-text);
+      }
+
+      .pill--hire {
+        background: var(--color-pill-hire);
+        color: var(--color-text-primary);
+      }
+
+      .vertical-icons {
+        position: absolute;
+        top: 88px;
+        right: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      .vertical-icons .icon-button {
+        width: 48px;
+        height: 48px;
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+      }
+
+      @media (max-width: 1200px) {
+        .marketplace {
+          grid-template-columns: 1fr;
+        }
+
+        .vertical-icons {
+          display: none;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .nav {
+          padding: 0 24px;
+          flex-direction: column;
+          gap: 18px;
+        }
+
+        .marketplace {
+          padding: 24px 24px 60px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <div class="nav">
+          <a class="nav__logo" href="#">
+            <img
+              src="https://www.figma.com/api/mcp/asset/e234a2bc-e29a-47eb-9aa5-f20bc1047758"
+              alt="Merak logo"
+            />
+          </a>
+          <nav aria-label="Primary">
+            <ul class="nav__links">
+              <li><a href="#marketplace">Marketplace</a></li>
+              <li><a href="#about">About Us</a></li>
+              <li><a href="#login">Log In</a></li>
+            </ul>
+          </nav>
+        </div>
+      </header>
+
+      <main>
+        <div class="marketplace">
+          <section class="marketplace__sidebar">
+            <div class="marketplace__glass">
+              <h1 class="marketplace__title">Best Match Research</h1>
+              <p class="marketplace__intro">
+                Ask Merak to scout the marketplace, curate the right operators,
+                and start hiring the moment you are ready.
+              </p>
+              <div class="search-box">
+                <label for="search-input">Ask Merak</label>
+                <textarea
+                  id="search-input"
+                  placeholder="Ask Merak to hire you your new accountant..."
+                ></textarea>
+                <div class="quick-actions">
+                  <button type="button">Accounting</button>
+                  <button type="button">Bookkeeping</button>
+                  <button type="button">Fractional CFO</button>
+                  <button type="button">Tax Advisory</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="marketplace__results">
+            <div class="vertical-icons">
+              <button class="icon-button" aria-label="Remove result">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M7 7l10 10M17 7L7 17"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </button>
+              <button class="icon-button" aria-label="Remove result">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M7 7l10 10M17 7L7 17"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </button>
+              <button class="icon-button" aria-label="Remove result">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M7 7l10 10M17 7L7 17"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <div class="results-wrapper">
+              <article class="result-card">
+                <div class="result-card__header">
+                  <div class="result-card__avatar" aria-hidden="true"></div>
+                  <div class="result-card__meta">
+                    <div class="result-card__tags">
+                      <span class="tag">Best Match</span>
+                      <span class="tag tag--secondary">Top Choice</span>
+                    </div>
+                    <div class="result-card__title">Agent Name - Agent Job</div>
+                    <div class="result-card__subtitle">
+                      Developer Name / Specialty One · Specialty Two
+                    </div>
+                  </div>
+                  <button class="result-card__more" aria-label="More options">
+                    <svg viewBox="0 0 24 24">
+                      <path
+                        d="M5 12h14M12 5v14"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <div class="result-card__divider" aria-hidden="true"></div>
+                <p class="result-card__description">
+                  Description - Lorem ipsum dolor sit amet, consectetur
+                  adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                  dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                  exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                  consequat...
+                </p>
+                <div class="result-card__divider" aria-hidden="true"></div>
+                <div class="result-card__footer">
+                  <span class="result-card__stat">50+ Hires</span>
+                  <div class="result-card__actions">
+                    <button class="icon-button" aria-label="Remove">
+                      <svg viewBox="0 0 24 24">
+                        <path
+                          d="M7 7l10 10M17 7L7 17"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                        />
+                      </svg>
+                    </button>
+                    <button class="icon-button" aria-label="Save">
+                      <svg viewBox="0 0 24 24">
+                        <path
+                          d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 5.65-7 10-7 10Z"
+                          stroke-width="1.5"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    </button>
+                    <button class="pill pill--ask" type="button">
+                      Ask Merak
+                    </button>
+                    <button class="pill pill--hire" type="button">
+                      Hire Now
+                    </button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="result-card">
+                <div class="result-card__header">
+                  <div class="result-card__avatar" aria-hidden="true"></div>
+                  <div class="result-card__meta">
+                    <div class="result-card__tags">
+                      <span class="tag">Best Match</span>
+                      <span class="tag tag--secondary">Top Choice</span>
+                    </div>
+                    <div class="result-card__title">Agent Name - Agent Job</div>
+                    <div class="result-card__subtitle">
+                      Developer Name / Specialty One · Specialty Two
+                    </div>
+                  </div>
+                  <button class="result-card__more" aria-label="More options">
+                    <svg viewBox="0 0 24 24">
+                      <path
+                        d="M5 12h14M12 5v14"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <div class="result-card__divider" aria-hidden="true"></div>
+                <p class="result-card__description">
+                  Description - Lorem ipsum dolor sit amet, consectetur
+                  adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                  dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                  exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                  consequat...
+                </p>
+                <div class="result-card__divider" aria-hidden="true"></div>
+                <div class="result-card__footer">
+                  <span class="result-card__stat">50+ Hires</span>
+                  <div class="result-card__actions">
+                    <button class="icon-button" aria-label="Remove">
+                      <svg viewBox="0 0 24 24">
+                        <path
+                          d="M7 7l10 10M17 7L7 17"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                        />
+                      </svg>
+                    </button>
+                    <button class="icon-button" aria-label="Save">
+                      <svg viewBox="0 0 24 24">
+                        <path
+                          d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 5.65-7 10-7 10Z"
+                          stroke-width="1.5"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    </button>
+                    <button class="pill pill--ask" type="button">
+                      Ask Merak
+                    </button>
+                    <button class="pill pill--hire" type="button">
+                      Hire Now
+                    </button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="result-card">
+                <div class="result-card__header">
+                  <div class="result-card__avatar" aria-hidden="true"></div>
+                  <div class="result-card__meta">
+                    <div class="result-card__tags">
+                      <span class="tag">Best Match</span>
+                      <span class="tag tag--secondary">Top Choice</span>
+                    </div>
+                    <div class="result-card__title">Agent Name - Agent Job</div>
+                    <div class="result-card__subtitle">
+                      Developer Name / Specialty One · Specialty Two
+                    </div>
+                  </div>
+                  <button class="result-card__more" aria-label="More options">
+                    <svg viewBox="0 0 24 24">
+                      <path
+                        d="M5 12h14M12 5v14"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <div class="result-card__divider" aria-hidden="true"></div>
+                <p class="result-card__description">
+                  Description - Lorem ipsum dolor sit amet, consectetur
+                  adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                  dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                  exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                  consequat...
+                </p>
+                <div class="result-card__divider" aria-hidden="true"></div>
+                <div class="result-card__footer">
+                  <span class="result-card__stat">50+ Hires</span>
+                  <div class="result-card__actions">
+                    <button class="icon-button" aria-label="Remove">
+                      <svg viewBox="0 0 24 24">
+                        <path
+                          d="M7 7l10 10M17 7L7 17"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                        />
+                      </svg>
+                    </button>
+                    <button class="icon-button" aria-label="Save">
+                      <svg viewBox="0 0 24 24">
+                        <path
+                          d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 5.65-7 10-7 10Z"
+                          stroke-width="1.5"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    </button>
+                    <button class="pill pill--ask" type="button">
+                      Ask Merak
+                    </button>
+                    <button class="pill pill--hire" type="button">
+                      Hire Now
+                    </button>
+                  </div>
+                </div>
+              </article>
+
+              <article class="result-card">
+                <div class="result-card__header">
+                  <div class="result-card__avatar" aria-hidden="true"></div>
+                  <div class="result-card__meta">
+                    <div class="result-card__tags">
+                      <span class="tag">Best Match</span>
+                      <span class="tag tag--secondary">Top Choice</span>
+                    </div>
+                    <div class="result-card__title">Agent Name - Agent Job</div>
+                    <div class="result-card__subtitle">
+                      Developer Name / Specialty One · Specialty Two
+                    </div>
+                  </div>
+                  <button class="result-card__more" aria-label="More options">
+                    <svg viewBox="0 0 24 24">
+                      <path
+                        d="M5 12h14M12 5v14"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <div class="result-card__divider" aria-hidden="true"></div>
+                <p class="result-card__description">
+                  Description - Lorem ipsum dolor sit amet, consectetur
+                  adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                  dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                  exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                  consequat...
+                </p>
+                <div class="result-card__divider" aria-hidden="true"></div>
+                <div class="result-card__footer">
+                  <span class="result-card__stat">50+ Hires</span>
+                  <div class="result-card__actions">
+                    <button class="icon-button" aria-label="Remove">
+                      <svg viewBox="0 0 24 24">
+                        <path
+                          d="M7 7l10 10M17 7L7 17"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                        />
+                      </svg>
+                    </button>
+                    <button class="icon-button" aria-label="Save">
+                      <svg viewBox="0 0 24 24">
+                        <path
+                          d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 5.65-7 10-7 10Z"
+                          stroke-width="1.5"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    </button>
+                    <button class="pill pill--ask" type="button">
+                      Ask Merak
+                    </button>
+                    <button class="pill pill--hire" type="button">
+                      Hire Now
+                    </button>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
