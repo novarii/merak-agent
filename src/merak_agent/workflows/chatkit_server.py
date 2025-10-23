@@ -2,8 +2,7 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-from typing import Any, AsyncIterator, Dict, Optional
+from typing import Any, AsyncIterator, Dict
 
 from agents import Runner
 from chatkit.agents import AgentContext, simple_to_agent_input, stream_agent_response
@@ -12,18 +11,18 @@ from chatkit.types import ThreadMetadata, UserMessageItem
 
 from merak_agent.agents import create_trip_planner_agent
 
+from .memory_store import MemoryStore
+
 RequestContext = Dict[str, Any]
 
 try:  # pragma: no cover - import path differs between library versions.
     from chatkit.stores import AttachmentStore as _AttachmentStoreBase
-    from chatkit.stores.sqlite import SQLiteStore
 except ImportError:  # pragma: no cover
     try:
         from chatkit.store import AttachmentStore as _AttachmentStoreBase
-        from chatkit.store.sqlite import SQLiteStore
     except ImportError as exc:  # pragma: no cover
         raise RuntimeError(
-            "Unable to import ChatKit store implementations. Ensure openai-chatkit is installed."
+            "Unable to import ChatKit base classes. Ensure openai-chatkit is installed."
         ) from exc
 
 
@@ -43,27 +42,9 @@ class DisabledAttachmentStore(_AttachmentStoreBase[RequestContext]):  # type: ig
 class TripPlannerChatKitServer(ChatKitServer[RequestContext]):
     """Minimal ChatKit server adapter for the Trip Planner agent."""
 
-    DEFAULT_DB_FILENAME = "chatkit_threads.sqlite3"
-
-    def __init__(self, database_path: Optional[str | Path] = None) -> None:
-        store_path = self._ensure_database_path(database_path)
-        store = SQLiteStore(str(store_path))
-        super().__init__(store, attachment_store=DisabledAttachmentStore())
+    def __init__(self, store: MemoryStore | None = None) -> None:
+        super().__init__(store or MemoryStore(), attachment_store=DisabledAttachmentStore())
         self._agent = create_trip_planner_agent()
-        self._store_path = store_path
-
-    @classmethod
-    def _ensure_database_path(cls, database_path: Optional[str | Path]) -> Path:
-        """Return an absolute SQLite path and ensure its parent directory exists."""
-
-        if database_path:
-            path = Path(database_path)
-        else:
-            path = Path(".merak") / cls.DEFAULT_DB_FILENAME
-
-        path = path.expanduser()
-        path.parent.mkdir(parents=True, exist_ok=True)
-        return path
 
     async def respond(
         self,

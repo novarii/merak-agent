@@ -11,3 +11,7 @@ src/merak_agent/agents/trip_planner.py
 src/merak_agent/common/destinations.py
 src/merak_agent/tools/__init__.py
 src/merak_agent/tools/destination_lookup.py
+src/merak_agent/workflows/__init__.py
+src/merak_agent/workflows/chat_cli.py
+src/merak_agent/workflows/chatkit_server.py
+src/merak_agent/workflows/memory_store.py

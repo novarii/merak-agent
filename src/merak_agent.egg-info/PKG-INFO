@@ -5,6 +5,13 @@ Summary: Trip planning agent powered by the OpenAI Agents Python SDK.
 Requires-Python: >=3.11
 Description-Content-Type: text/markdown
 Requires-Dist: openai-agents>=0.2.9
+Requires-Dist: openai-chatkit>=0.1.0
+Requires-Dist: fastapi>=0.111.0
+Requires-Dist: uvicorn[standard]>=0.30.0
+Requires-Dist: httpx[sse]>=0.27.0
+Requires-Dist: python-dotenv>=1.0.1
+Requires-Dist: aiosqlite>=0.20.0
+Requires-Dist: typing_extensions>=4.9
 
 ## Merak Trip Planner Agent
 
@@ -16,20 +23,57 @@ This repo now includes a minimal example of building a travel-planning agent usi
 
 ### Setup
 ```bash
-python -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
 ### Run the Trip Planner
-Provide the traveler details either as CLI arguments or via stdin.
+By default the CLI starts an interactive REPL that keeps the conversation history for the duration of the process. You can optionally seed the first turn via CLI arguments.
 
 ```bash
 export OPENAI_API_KEY=sk-...
-python scripts/run_trip_planner.py "Plan a spring honeymoon in Japan focused on culture and food."
+python3 scripts/run_trip_planner.py
+# or seed the opening request
+python3 scripts/run_trip_planner.py "Plan a spring honeymoon in Japan focused on culture and food."
+```
+
+Type `exit` or `quit` to end the chat. Supply `--session-id my_trip` to persist the thread with `SQLiteSession` and resume it later.
+
+### Single-Turn Mode
+Use the `--single-turn` flag when you only need a one-off itinerary.
+
+```bash
+export OPENAI_API_KEY=sk-...
+python3 scripts/run_trip_planner.py --single-turn "Plan a winter ski escape in the Alps."
 ```
 
 ### Tests
 ```bash
 pytest
 ```
+
+### Run the ChatKit FastAPI Server
+Enable the ChatKit bridge to power the upcoming Next.js frontend.
+
+```bash
+export OPENAI_API_KEY=sk-...
+export MERAK_ENABLE_CHATKIT_SERVER=1
+python3 scripts/run_chatkit_server.py --host 0.0.0.0 --port 8000
+```
+
+Health checks are available at `http://localhost:8000/healthz`. ChatKit clients should POST to
+`/chatkit` and send the JSON payloads defined in the [ChatKit Python docs](https://openai.github.io/chatkit-python/server).
+
+### Next.js Frontend
+Phase 2 introduces the browser client scaffold in `frontend/merak_web`.
+
+```bash
+cd frontend/merak_web
+npm install
+npm run dev
+```
+
+- Requires Node.js 24.5 or newer (see `.nvmrc` inside the project).
+- `npm run lint`, `npm run test`, and `npm run typecheck` mirror the Python tooling conventions.
+- The landing page currently ships with a placeholder hero; upcoming phases will layer in the ChatKit streaming proxy and chat components.
